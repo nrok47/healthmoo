@@ -126,13 +126,20 @@ const css = `
   .orb:hover{transform:scale(1.12)!important;filter:brightness(1.2)!important}
   input,select,textarea{outline:none;transition:border-color .2s,box-shadow .2s}
   input:focus,select:focus,textarea:focus{border-color:${GOLD}!important;box-shadow:0 0 0 2px ${GOLD}33!important}
+  /* responsive typography and spacing */
+  body{font-size:16px;line-height:1.5;padding:0;margin:0;}
+  @media (max-width:600px){body{font-size:14px;}}
+  @media (min-width:1024px){body{font-size:18px;}}
+  /* container max width adjusts above */
+  @media (max-width:480px){.btn-opt,.btn-cta{font-size:0.9rem;padding:0.5rem 1rem;}}
+  @media (min-width:1024px){.btn-opt,.btn-cta{font-size:1.1rem;padding:0.8rem 1.4rem;}}
 `;
 
 function useFade(k){const[v,sV]=useState(false);useEffect(()=>{sV(false);const t=setTimeout(()=>sV(true),60);return()=>clearTimeout(t);},[k]);return v;}
 
 function Particles(){return(<div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:0}}>{[...Array(16)].map((_,i)=>(<div key={i} style={{position:"absolute",width:i%3===0?6:3,height:i%3===0?6:3,borderRadius:"50%",background:i%4===0?GOLD:"rgba(201,168,76,0.25)",left:`${(i*19+3)%100}%`,top:`${(i*27+7)%100}%`,animation:`float${i%3} ${4+(i%4)}s ease-in-out infinite`,animationDelay:`${i*.35}s`}}/>))}<style>{css}</style></div>);}
 
-function Page({children,vis}){return(<div style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(22px)",transition:"opacity .5s ease,transform .5s ease",position:"relative",zIndex:1,width:"100%",maxWidth:480}}>{children}</div>);}
+function Page({children,vis}){return(<div style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(22px)",transition:"opacity .5s ease,transform .5s ease",position:"relative",zIndex:1,width:"100%",maxWidth:"600px",margin:"0 auto",padding:"0 16px",boxSizing:"border-box"}}>{children}</div>);}
 
 const KanokBorder=()=>(<div style={{textAlign:"center",color:GOLD,fontSize:18,letterSpacing:10,userSelect:"none",animation:"glow 3s ease-in-out infinite"}}>❧ ✦ ❧</div>);
 
