@@ -145,8 +145,15 @@ const css = `
   
   /* responsive spacing */
   @media (max-width:480px){.page-content{padding:0 12px;}}
-  @media (min-width:481px){.page-content{padding:0 16px;}}
-  @media (min-width:768px){.page-content{padding:0 20px;}}
+  @media (min-width:481px) and (max-width:767px){.page-content{padding:0 16px;}}
+  @media (min-width:768px) and (max-width:1023px){.page-content{padding:0 20px;}}
+  @media (min-width:1024px){.page-content{padding:0;max-width:100%;}}
+  
+  /* PC full screen layout */
+  @media (min-width:1024px){
+    body{margin:0;padding:0;overflow-x:hidden;}
+    .page-content{width:100vw;max-width:none;margin:0;padding:0;}
+  }
   
   /* touch-friendly hover states */
   @media (hover: hover) and (pointer: fine){
