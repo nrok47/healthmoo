@@ -128,18 +128,44 @@ const css = `
   input:focus,select:focus,textarea:focus{border-color:${GOLD}!important;box-shadow:0 0 0 2px ${GOLD}33!important}
   /* responsive typography and spacing */
   body{font-size:16px;line-height:1.5;padding:0;margin:0;}
-  @media (max-width:600px){body{font-size:14px;}}
-  @media (min-width:1024px){body{font-size:18px;}}
-  /* container max width adjusts above */
-  @media (max-width:480px){.btn-opt,.btn-cta{font-size:0.9rem;padding:0.5rem 1rem;}}
-  @media (min-width:1024px){.btn-opt,.btn-cta{font-size:1.1rem;padding:0.8rem 1.4rem;}}
+  @media (max-width:480px){body{font-size:14px;line-height:1.4;}}
+  @media (min-width:768px){body{font-size:16px;line-height:1.5;}}
+  @media (min-width:1024px){body{font-size:18px;line-height:1.6;}}
+  @media (min-width:1440px){body{font-size:20px;line-height:1.6;}}
+  
+  /* responsive container */
+  @media (max-width:480px){.btn-opt,.btn-cta{font-size:0.85rem;padding:0.6rem 1rem;min-height:44px;}}
+  @media (min-width:481px) and (max-width:767px){.btn-opt,.btn-cta{font-size:0.95rem;padding:0.7rem 1.2rem;min-height:48px;}}
+  @media (min-width:768px) and (max-width:1023px){.btn-opt,.btn-cta{font-size:1rem;padding:0.75rem 1.3rem;min-height:48px;}}
+  @media (min-width:1024px){.btn-opt,.btn-cta{font-size:1.1rem;padding:0.8rem 1.4rem;min-height:52px;}}
+  
+  /* responsive input fields */
+  @media (max-width:480px){input,select,textarea{font-size:16px;padding:12px 14px;min-height:44px;}}
+  @media (min-width:481px){input,select,textarea{font-size:14px;padding:10px 14px;}}
+  
+  /* responsive spacing */
+  @media (max-width:480px){.page-content{padding:0 12px;}}
+  @media (min-width:481px){.page-content{padding:0 16px;}}
+  @media (min-width:768px){.page-content{padding:0 20px;}}
+  
+  /* touch-friendly hover states */
+  @media (hover: hover) and (pointer: fine){
+    .btn-opt:hover{transform:scale(1.02) translateX(4px)!important;border-color:${GOLD}!important;background:rgba(201,168,76,0.15)!important}
+    .btn-cta:hover{transform:scale(1.03)!important;filter:brightness(1.15)!important}
+    .orb:hover{transform:scale(1.12)!important;filter:brightness(1.2)!important}
+  }
+  @media (hover: none) and (pointer: coarse){
+    .btn-opt:active{transform:scale(0.98)!important;background:rgba(201,168,76,0.2)!important}
+    .btn-cta:active{transform:scale(0.98)!important}
+    .orb:active{transform:scale(0.95)!important}
+  }
 `;
 
 function useFade(k){const[v,sV]=useState(false);useEffect(()=>{sV(false);const t=setTimeout(()=>sV(true),60);return()=>clearTimeout(t);},[k]);return v;}
 
-function Particles(){return(<div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:0}}>{[...Array(16)].map((_,i)=>(<div key={i} style={{position:"absolute",width:i%3===0?6:3,height:i%3===0?6:3,borderRadius:"50%",background:i%4===0?GOLD:"rgba(201,168,76,0.25)",left:`${(i*19+3)%100}%`,top:`${(i*27+7)%100}%`,animation:`float${i%3} ${4+(i%4)}s ease-in-out infinite`,animationDelay:`${i*.35}s`}}/>))}<style>{css}</style></div>);}
+function Particles(){return(<><div style={{position:"fixed",inset:0,pointerEvents:"none",overflow:"hidden",zIndex:0}}>{[...Array(16)].map((_,i)=>(<div key={i} style={{position:"absolute",width:i%3===0?6:3,height:i%3===0?6:3,borderRadius:"50%",background:i%4===0?GOLD:"rgba(201,168,76,0.25)",left:`${(i*19+3)%100}%`,top:`${(i*27+7)%100}%`,animation:`float${i%3} ${4+(i%4)}s ease-in-out infinite`,animationDelay:`${i*.35}s`}}/>))}</div><style>{css}</style></>);}
 
-function Page({children,vis}){return(<div style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(22px)",transition:"opacity .5s ease,transform .5s ease",position:"relative",zIndex:1,width:"100%",maxWidth:"600px",margin:"0 auto",padding:"0 16px",boxSizing:"border-box"}}>{children}</div>);}
+function Page({children,vis}){return(<div className="page-content" style={{opacity:vis?1:0,transform:vis?"translateY(0)":"translateY(22px)",transition:"opacity .5s ease,transform .5s ease",position:"relative",zIndex:1,width:"100%",maxWidth:"min(600px,95vw)",margin:"0 auto",padding:"0 clamp(12px,3vw,20px)",boxSizing:"border-box"}}>{children}</div>);}
 
 const KanokBorder=()=>(<div style={{textAlign:"center",color:GOLD,fontSize:18,letterSpacing:10,userSelect:"none",animation:"glow 3s ease-in-out infinite"}}>❧ ✦ ❧</div>);
 
@@ -252,7 +278,7 @@ export default function HealthMoo(){
 
   const reset=()=>{setStep("welcome");setPartIdx(0);setQIdx(0);setAnswers({});setDob({d:"",m:"",y:""});setDayOfWeek("");setWeight("");setHeight("");setConsented(false);setProfile({name:"",age:"",gender:"",feedback:""});setProfileSaved(false);setActiveOrb(null);};
 
-  const base={minHeight:"100vh",background:`linear-gradient(160deg,${DARK} 0%,#2d1b4e 60%,#1a0a2e 100%)`,color:"#f0e6c8",fontFamily:"'Segoe UI',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",padding:"24px 16px",position:"relative",overflow:"hidden"};
+  const base={minHeight:"100vh",background:`linear-gradient(160deg,${DARK} 0%,#2d1b4e 60%,#1a0a2e 100%)`,color:"#f0e6c8",fontFamily:"'Segoe UI',sans-serif",display:"flex",flexDirection:"column",alignItems:"center",padding:"clamp(12px,3vw,24px) clamp(8px,2vw,16px)",position:"relative",overflow:"hidden"};
   const btnBase=(extra={})=>({display:"block",width:"100%",background:"rgba(255,255,255,0.04)",border:`1px solid ${GOLD}44`,borderRadius:12,padding:"13px 16px",color:"#f0e6c8",textAlign:"left",cursor:"pointer",marginBottom:9,fontSize:14,transition:"all .2s ease",...extra});
 
   // ── WELCOME ──
@@ -260,8 +286,8 @@ export default function HealthMoo(){
     <Page vis={vis}><div style={{textAlign:"center"}}>
       <div style={{fontSize:60,animation:"pulse 2s ease-in-out infinite"}}>🔮</div>
       <KanokBorder/>
-      <h1 style={{color:GOLD,fontSize:32,margin:"10px 0 2px",fontWeight:900,letterSpacing:3,background:`linear-gradient(90deg,#C9A84C,#ffe8a0,#C9A84C)`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Health-Moo</h1>
-      <p style={{color:GOLD,fontSize:12,letterSpacing:5,marginBottom:14}}>KARMA LEDGER v2</p>
+      <h1 style={{color:GOLD,fontSize:"clamp(24px,6vw,32px)",margin:"10px 0 2px",fontWeight:900,letterSpacing:3,background:`linear-gradient(90deg,#C9A84C,#ffe8a0,#C9A84C)`,backgroundSize:"200% auto",WebkitBackgroundClip:"text",WebkitTextFillColor:"transparent",animation:"shimmer 3s linear infinite"}}>Health-Moo</h1>
+      <p style={{color:GOLD,fontSize:"clamp(10px,3vw,12px)",letterSpacing:5,marginBottom:14}}>KARMA LEDGER v2</p>
       <KanokBorder/>
       <div style={{background:"rgba(201,168,76,0.08)",border:`1px solid ${GOLD}44`,borderRadius:16,padding:"18px 22px",margin:"20px 0",animation:"fadeIn 1s ease .3s both"}}>
         <p style={{fontSize:14,lineHeight:2,color:"#e8d5a3"}}>
